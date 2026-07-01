@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reliability Lab Command Center</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="mesh" aria-hidden="true"></canvas>
+
+    <header class="topbar">
+      <a class="brand" href="#overview" aria-label="Reliability Lab home">
+        <span class="brand-mark"></span>
+        <span>Reliability Lab</span>
+      </a>
+      <nav aria-label="Sections">
+        <a href="#pipeline">Pipeline</a>
+        <a href="#slo">SLOs</a>
+        <a href="#chaos">Chaos</a>
+        <a href="#artifacts">Artifacts</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="overview" class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">LLM gateway reliability showcase</p>
+          <h1>Command center for a resilient AI provider stack.</h1>
+          <p class="lede">
+            Circuit breakers, semantic cache guardrails, Redis shared state, fallback routing,
+            and chaos evidence in one live-feeling dashboard.
+          </p>
+        </div>
+
+        <div class="hero-board" aria-label="Top reliability metrics">
+          <article class="metric-tile dominant">
+            <span>Availability</span>
+            <strong data-count="99.25" data-suffix="%">0%</strong>
+            <small>SLO target >= 99%</small>
+          </article>
+          <article class="metric-tile">
+            <span>P95 Latency</span>
+            <strong data-count="313.47" data-suffix=" ms">0 ms</strong>
+            <small>Target < 2500 ms</small>
+          </article>
+          <article class="metric-tile">
+            <span>Cache Hit Rate</span>
+            <strong data-count="46.75" data-suffix="%">0%</strong>
+            <small>Semantic + TTL guardrails</small>
+          </article>
+          <article class="metric-tile">
+            <span>Fallback Success</span>
+            <strong data-count="96.70" data-suffix="%">0%</strong>
+            <small>Backup provider recovery</small>
+          </article>
+        </div>
+      </section>
+
+      <section id="pipeline" class="band pipeline-band">
+        <div class="section-head">
+          <p class="eyebrow">Request path</p>
+          <h2>Cache first, breaker guarded, fallback ready.</h2>
+        </div>
+
+        <div class="pipeline" aria-label="Gateway pipeline">
+          <div class="node hot">
+            <span class="node-label">Request</span>
+            <strong>User prompt</strong>
+          </div>
+          <div class="node cache">
+            <span class="node-label">Semantic cache</span>
+            <strong>47% hit rate</strong>
+          </div>
+          <div class="node breaker">
+            <span class="node-label">Circuit breaker</span>
+            <strong>Primary</strong>
+          </div>
+          <div class="node provider">
+            <span class="node-label">Provider chain</span>
+            <strong>Primary -> Backup</strong>
+          </div>
+          <div class="node fallback">
+            <span class="node-label">Last resort</span>
+            <strong>Static fallback</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="slo" class="band">
+        <div class="section-head">
+          <p class="eyebrow">Service level objectives</p>
+          <h2>Every target is green on the latest run.</h2>
+        </div>
+
+        <div class="slo-grid">
+          <article class="gauge" data-value="99.25" data-target="99">
+            <div class="ring"><span>99.25%</span></div>
+            <h3>Availability</h3>
+            <p>400 requests, 0.75% error rate.</p>
+          </article>
+          <article class="gauge" data-value="12.54" data-target="100">
+            <div class="ring"><span>313 ms</span></div>
+            <h3>P95 Latency</h3>
+            <p>Only 12.5% of the 2500 ms budget.</p>
+          </article>
+          <article class="gauge" data-value="96.70" data-target="95">
+            <div class="ring"><span>96.70%</span></div>
+            <h3>Fallback Success</h3>
+            <p>Fallback chain absorbs primary outages.</p>
+          </article>
+          <article class="gauge" data-value="44.69" data-target="100">
+            <div class="ring"><span>2234 ms</span></div>
+            <h3>Recovery Time</h3>
+            <p>Less than half of the 5000 ms budget.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="chaos" class="band chaos-band">
+        <div class="section-head">
+          <p class="eyebrow">Chaos evidence</p>
+          <h2>Failure modes were rehearsed, measured, and passed.</h2>
+        </div>
+
+        <div class="scenario-grid">
+          <article class="scenario">
+            <span class="status">pass</span>
+            <h3>primary_timeout_100</h3>
+            <p>Primary fails completely; backup handles the route while the breaker opens.</p>
+          </article>
+          <article class="scenario">
+            <span class="status">pass</span>
+            <h3>primary_flaky_50</h3>
+            <p>Mixed success and failure; circuit state changes contain the blast radius.</p>
+          </article>
+          <article class="scenario">
+            <span class="status">pass</span>
+            <h3>all_healthy</h3>
+            <p>Normal path stays fast with cache assistance and no unnecessary degradation.</p>
+          </article>
+          <article class="scenario">
+            <span class="status">pass</span>
+            <h3>cache_disabled_comparison</h3>
+            <p>Baseline comparison confirms the value of semantic caching.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="artifacts" class="band artifacts">
+        <div class="section-head">
+          <p class="eyebrow">Submission pack</p>
+          <h2>Code, tests, metrics, and report are ready.</h2>
+        </div>
+
+        <div class="artifact-layout">
+          <div class="test-panel">
+            <div class="terminal-bar">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>pytest tests/ -v
+35 passed, 7 xpassed
+
+pytest tests/test_redis_cache.py -v
+6 passed
+
+python scripts/run_chaos.py
+wrote reports/metrics.json
+wrote reports/metrics.csv</code></pre>
+          </div>
+
+          <div class="artifact-links">
+            <a href="../reports/metrics.json">Open metrics.json</a>
+            <a href="../reports/metrics.csv">Open metrics.csv</a>
+            <a href="../reports/final_report.md">Open final_report.md</a>
+            <a href="../src/reliability_lab/chaos.py">Inspect chaos.py</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
